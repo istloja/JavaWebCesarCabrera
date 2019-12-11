@@ -21,7 +21,7 @@
                     <p:password id="password" value="#{primerBean.password}" required="true" label="password" />
 
                     <f:facet name="footer">
-                        <p:commandButton value="Login" update="growl" action="#{userLoginView.login}"
+                        <p:commandButton value="Login" update="growl" action="#{primerBean.login}"
                                          oncomplete="handleLoginRequest(xhr, status, args)" />
                     </f:facet>  
                 </h:panelGrid>

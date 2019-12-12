@@ -18,6 +18,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -105,8 +106,20 @@ public class filter implements Filter {
         HttpServletResponse servletResponse = (HttpServletResponse)response;
         boolean logeo=false;
         boolean redireccion = true;
-        String paginas[]={"/sga/Pagina1.xhtml","/sga/welcomePrimefaces.xhtml"};
-        if (logeo){
+        String paginas[]={"/sga/Admin.xhtml","/sga/Pagina1.xhtml","/sga/welcomePrimefaces.xhtml","/sga/Pagina2.xhtml"};
+        HttpSession sesionGuardada = servletRequest.getSession(true);
+        Usuario usu = (Usuario) sesionGuardada.getAttribute("Usario");
+        if (usu != null) {
+                chain.doFilter(request, response);                
+        } else{
+            for (String pagina : paginas) {
+                if(servletRequest.getRequestURI().contains(pagina)){
+                    redireccion=false;
+                }          
+            }
+        }
+        
+        /*if (logeo){
             chain.doFilter(request, response);
         }else{
             for (String pagina : paginas) {
@@ -114,13 +127,13 @@ public class filter implements Filter {
                     redireccion=false;
                 }          
             }
-        }
+        }*/
         if(redireccion){
             servletResponse.sendRedirect(servletRequest.getContextPath()+"/sga/Pagina1.xhtml");
         }else{
             chain.doFilter(request, response);        
         }              
-        
+       
     }
 
     /**
